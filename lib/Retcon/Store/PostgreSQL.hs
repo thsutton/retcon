@@ -209,8 +209,8 @@ instance Store PGStore where
       opsQ = "INSERT INTO retcon_diff_conflicts (diff_id, content) VALUES (?, ?)"
 
   resolveDiffs (PGStore conn _) did = do
-      execute conn "DELETE FROM retcon_diff_conflicts WHERE diff_id = ?" (Only did)
-      execute conn "UPDATE retcon_diff SET is_conflict = FALSE WHERE diff_id = ?" (Only did)
+      _ <- execute conn "DELETE FROM retcon_diff_conflicts WHERE diff_id = ?" (Only did)
+      _ <- execute conn "UPDATE retcon_diff SET is_conflict = FALSE WHERE diff_id = ?" (Only did)
       updateConflicts conn
 
   reduceDiff (PGStore conn _) patchID resolved = do
